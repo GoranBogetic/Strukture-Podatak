@@ -1,0 +1,221 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <limits.h>
+#include <time.h>
+
+struct _BinTree;
+typedef struct _BinTree* Point;
+typedef struct _BinTree{
+    int X;
+    Point L;
+    Point R;
+}BinTree;
+
+struct _Stog;
+typedef struct _Stog* pt;
+typedef struct _Stog{
+    int n;
+    pt next;
+}Stog;
+
+Point CreateEl(int n);
+Point Insert(Point p, Point newEl);
+int Replace(Point p);
+Point CreateTree(Point pRoot);
+int DeleteAll(Point p);
+int InorderToStog(Point p, pt a);
+int PrintInorder(Point p);
+int PrintInFile(char* fName, pt frs);
+pt CreateElStog(int n);
+int DeleteStog(pt head);
+int InsertAfter(pt p, pt newEl);
+Point FindLast(pt head);
+int AddAtEnd(int n, pt head);
+
+int main()
+{
+    Point pRoot = NULL;
+    pRoot = CreateTree(pRoot);
+    
+    return 0;
+}
+
+Point CreateTree(Point pRoot)
+{
+    int i = 0;
+    Point temp = NULL;
+    
+    srand(time(0));
+    
+    for(i = 0; i < 10; i++)
+    {
+        temp = CreateEl(rand() % 79 + 11);
+        if(!temp)
+            return NULL;
+        pRoot = Insert(pRoot, temp);
+    }
+    
+    return pRoot;
+}
+
+Point CreateEl(int n)
+{
+    Point newEl = NULL;
+    newEl = (Point)malloc(sizeof(BinTree));
+    
+    if(!newEl){
+        printf("Memory allocation failed.");
+        return NULL;
+    }
+    
+    newEl->X = n;
+    newEl->L = NULL;
+    newEl->R = NULL;
+    return newEl;
+}
+
+Point Insert(Point p, Point newEl)
+{
+    if(p == NULL)
+        return newEl;
+    else if(p->X < newEl->X)
+        p->L = Insert(p->L, newEl);
+    else if(p->X > newEl->X)
+        p->R = Insert(p->R, newEl);
+        
+    return p;
+}
+
+int PrintInorder(Point p)
+{
+    if(!p)
+        return 0;
+    
+    PrintInorder(p->L);
+    printf("%d", p->X);
+    PrintInorder(p->R);
+    return 0;
+}
+
+int Replace(Point p)
+{
+    int temp = NULL;
+    
+    if(p == NULL)
+        return 0;
+    else{
+        temp = p->X;
+        p->X = Replace(p->R) + Replace(p->L);
+        return p->X + temp;
+    }
+}
+
+int DeleteAll(Point p)
+{
+    if(!p)
+        return 0;
+    if(!p->L && !p->R)
+        free(p);
+    else{
+        if(p->L)
+            DeleteAll(p->L);
+        if(p->R)
+            DeleteAll(p->R);
+            
+        free(p);
+    }
+    
+    return 0;
+}
+
+pt CreateElStog(int n)
+{
+    pt newEl = NULL;
+    newEl = (pt)malloc(sizeof(Stog));
+    
+    if(!newEl){
+        printf("Memory allocation failed.");
+        return NULL;
+    }
+    
+    newEl->n = n;
+    newEl->next = NULL;
+    return newEl;
+}
+
+int InsertAfter(pt p, pt newEl)
+{
+    newEl->next = p->next;
+    p->next = newEl;
+    return 0;
+}
+
+Point FindLast(pt head)
+{
+    pt last = head;
+    while(last -> next){
+        last = last -> next;
+    }
+    return last;
+}
+
+int AddAtEnd(int n, pt head)
+{
+    pt newEl = NULL;
+    newEl = CreateElStog(n);
+    
+    if(!newEl)
+        return -1;
+        
+    InsertAfter(FindLast(head), newEl);
+    return 0;
+}
+
+int InorderToStog(Point p, pt a)
+{
+    if(!p)
+        return 0;
+    InorderToStog(p->L, a);
+    AddAtEnd(p->X, a);
+    InorderToStog(p->R, a);
+    
+    return 0;
+}
+
+int PrintInFile(char* fName, pt frs)
+{
+    pt temp = frs;
+    FILE* f = NULL;
+    
+    f = fopen(fName, "w");
+    if(f == NULL){
+        printf("File failed to open.\n");
+        return -1;
+    }
+    
+    for(temp; temp; temp = temp->next)
+        fprintf(f, "%d ", temp->n);
+        
+    fclose(f);
+    return 0;
+}
+
+int DeleteStog(pt head)
+{
+    pt temp = NULL;
+    
+    while(head->next != NULL){
+        temp = head->next;
+        head->next = temp->next;
+        free(temp);
+    }
+    
+    return 0;
+}
+
+
+
+
+
+
