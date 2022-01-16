@@ -6,7 +6,7 @@
 struct _Directory;
 typedef struct _Directory* Point;
 typedef struct _Directory{
-    char* name[MAX];
+    char name[MAX];
     Point sibling;
     Point child;
 }Directory;
@@ -17,12 +17,82 @@ int Print(Point p, int i);
 int FindParent(Point* current, Point parent, Point p, char name[MAX]);
 int FindByName(Point* current, Point p, char name[MAX]);
 int Delete(Point p);
+int Menu(Point pRoot);
 
 int main()
 {
     Directory root = {.name = "..", .sibling = NULL, .child = NULL};
+    Point pRoot = &root;
 
     return 0;
+}
+
+int Menu(Point pRoot)
+{
+    int option = 0;
+    Point current = pRoot;
+    char name[MAX];
+    
+    while(1)
+    {
+        printf("\nEnter number coresponding to action you want to perform:\n"
+                "1 - md\n"
+                "2 - cd dir\n"
+                "3 - cd..\n"
+                "4 - dir\n"
+                "5 - exit\n");
+                
+        scanf("%d", &option);
+        
+        switch(option)
+        {
+            case 1:
+            {
+                printf("Enter the name of the new directory you wish to create:\n");
+                scanf(" %s", name);
+                current->child = Insert(current->child, CreateDirectory(name));
+                
+                break;
+            }
+            
+            case 2:
+            {
+                Point p = pRoot;
+                printf("Enter the name of the directory you wish to move to:\n");
+                scanf(" %s", name);
+                FindByName(&current, p, name);
+                
+                break;
+            }
+            
+            case 3:
+            {
+                Point parent = pRoot;
+                Point p = pRoot;
+                FindParent(&current, parent, p, name);
+                
+                break;
+            }
+            
+            case 4:
+            {
+                Print(pRoot, 0);
+                break;
+            }
+             
+            case 5:
+            {
+                Delete(pRoot->child);
+                break;
+            }
+            
+            default:
+            {
+                printf("\nIncorrect input. Try again.\n");
+                break;
+            }
+        }
+    }
 }
 
 Point Insert(Point current, Point newDirectory)
@@ -123,7 +193,3 @@ int Delete(Point p)
     
     return 0;
 }
-
-
-
-
