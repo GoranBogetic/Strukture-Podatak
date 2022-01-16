@@ -102,9 +102,10 @@ Point CreateEl(int n)
     Point newEl = NULL;
     newEl = (Point)malloc(sizeof(BinTree));
     
-    if(!newEl)
+    if(!newEl){
         printf("Memory allocation failed.");
         return NULL;
+    }
         
     newEl->X = n;
     newEl->L = NULL;
