@@ -24,11 +24,130 @@ int MaxLvl(Point p, int lv);
 int Find(Point p, int n);
 Point Delete(Point p, int n);
 int DeleteAll(Point p);
+int Menu(Point pRoot);
 
 int main()
 {
+    Point pRoot = NULL;
+    Menu(pRoot);
     
     return 0;
+}
+
+int Menu(Point pRoot)
+{
+    int option = 0;
+    
+    while(1)
+    {
+        printf("\nEnter number coresponding to action you want to perform:\n"
+                "1 -> Add a new element to the tree\n"
+                "2 -> Print inorder\n"
+                "3 -> Print preorder\n"
+                "4 -> Print postorder\n"
+                "5 -> Print level order\n"
+                "6 -> Find element\n"
+                "7 -> Delete element\n"
+                "8 -> Exit\n");
+                
+        scanf("%d", &option);
+        
+        switch(option)
+        {
+            case 1:
+            {
+                int n = 0;
+                printf("\nEnter the value you would like to add to the tree:\n");
+                scanf(" %d", &n);
+                pRoot = Insert(pRoot, CreateEl(n));
+                option = 0;
+                
+                break;
+            }
+            
+            case 2:
+            {
+                printf("\n");
+                PrintInorder(pRoot);
+                printf("\n");
+                option = 0;
+                
+                break;
+            }
+            
+            case 3:
+            {
+                printf("\n");
+                PrintPreorder(pRoot);
+                printf("\n");
+                option = 0;
+                
+                break;
+            }
+            
+            case 4:
+            {
+                printf("\n");
+                PrintPostorder(pRoot);
+                printf("\n");
+                option = 0;
+                
+                break;
+            }
+            
+            case 5:
+            {
+                printf("\n");
+                PrintLevelorder(pRoot);
+                printf("\n");
+                option = 0;
+                
+                break;
+            }
+            
+            case 6:
+            {
+                int n = 0;
+                printf("\nEnter the value you would like to check for:\n");
+                scanf(" %d", &n);
+                if(Find(pRoot, n))
+                    printf("The value %d exists in the tree.\n", n);
+                else
+                    printf("The value %d doesn't exist in the tree.\n", n);
+                    
+                option = 0;
+                break;
+            }
+            
+            case 7:
+            {
+                int n = 0;
+                printf("\nEnter the value you would like to delete:\n");
+                scanf(" %d", &n);
+                if(!Find(pRoot, n));
+                else
+                    Delete(pRoot, n);
+                    
+                option = 0;
+                break;
+            }
+            
+            case 8:
+            {
+                DeleteAll(pRoot);
+                break;
+            }
+            
+            default:
+            {
+                printf("\nIncorrect input. Try again.\n");
+                
+                option = 0;
+                break;
+            }
+        }
+    }
+    return -1;
 }
 
 int Find(Point p, int n)
@@ -196,12 +315,3 @@ int PrintLevelorder(Point p)
     
     return 0;
 }
-
-
-
-
-
-
-
-
-
