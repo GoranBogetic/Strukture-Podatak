@@ -252,10 +252,199 @@ int Sort (Position head)
     return 0;
 }
 
+int Menu(Position p)
+{
+    char fName={0};
+    int option=0;
+    char name[20]={0};
+    char surname[20]={0};
+    char s[20]="0";
+    int birthYear=0;
+    int temp=1;
+    int OnOff=1;
+    
+    while(OnOff)
+    {
+        printf("\nEnter number coresponding to action you want to perform:\n"
+                "1 -> Add a new person to the list\n"
+                "2 -> Delete someone from the list\n"
+                "3 -> Check if someone is on the list\n"
+                "4 -> Print the list\n"
+                "5 -> Delete the list\n"
+                "6 -> Read list from a file\n"
+                "7 -> Sort list\n"
+                "8 -> Write list in a file\n"
+                "9 -> Exit\n");
+                
+        scanf("%d", &option);
+            
+        switch(option)
+        {
+            case 1:
+            {
+                while(temp)
+                {
+                    printf("\n1 -> Add to the beginning\n"
+                            "2 -> Add to the end\n"
+                            "3 -> Add sorted (this is pointless if the list insn't sorted already)\n"
+                            "4 -> Return to previous menu\n");
+                            
+                    scanf("%d", &option);
+                    
+                    switch(option)
+                    {
+                        case 1:
+                        {
+                            while(1)
+                            {
+                                printf("Enter in order: name surname birthyear\n");
+                                if(scanf("%s %s %d", name, surname, &birthYear) == 3){
+                                    AddAtFront(name, surname, birthYear, p);
+                                    break;
+                                }   
+                    
+                                else 
+                                    printf("Incorrect input. Try again\n");
+                            }
+                
+                            break;
+                        }
+                    
+                        
+                        case 2:
+                        {
+                            while(1)
+                            {
+                                printf("Enter in order: name surname birthyear\n");
+                                if(scanf("%s %s %d", name, surname, &birthYear) == 3){
+                                    AddAtBack(name, surname, birthYear, p);
+                                    break;
+                                }
+                    
+                                else 
+                                    printf("Incorrect input. Try again\n");
+                            }
+                
+                            break;
+                        }
+            
+                        case 3:
+                        {
+                            while(1)
+                            {
+                                printf("Enter in order: name surname birthyear\n");
+                                if(scanf("%s %s %d", name, surname, &birthYear) == 3){
+                                    AddSorted(name, surname, birthYear, p);
+                                    break;
+                                }
+                    
+                                else 
+                                    printf("Incorrect input. Try again\n");
+                            }
+                
+                            break;
+                        }
+                        
+                        case 4:
+                        {
+                            temp = 0;
+                            break;
+                        }
+                        
+                        default:
+                        {
+                            printf("Incorrect input. Try again\n");
+                            break;
+                        }
+                    }
+                }
+                
+                break;
+            }
+            
+            case 2:
+            {
+                printf("Enter the surname of the person you wish to delete\n");
+                scanf("%s", s);
+                Delete(s, p);
+                        
+                break;
+            }
+                    
+            case 3:
+            {
+                printf("Enter the surname of the person you wish to check\n");
+                scanf("%s", s);
+                if(!FindBySurname(s, p -> next))
+                    printf("There is no %s in this list", s);
+                else
+                    printf("%s is in this list", s);
+                            
+                break;
+            }
+                    
+            case 4:
+            {
+                Print(p -> next);
+                break;
+            }
+                    
+            case 5:
+            {
+                DeleteAll(p);
+                break;
+            }
+                    
+            case 6:
+            {
+                DeleteAll(p);
+                printf("Enter the name of the .txt file you wish to read from:\n");
+                scanf("%s", s);
+                strcat(s, ".txt");
+                ReadFile(s, p);
+                    
+                break;
+            }
+                    
+            case 7:
+            {
+                Sort(p);
+                break;
+            }
+                    
+            case 8:
+            {
+                printf("Enter the name of the .txt file you wish to write in:\n");
+                scanf("%s", s);
+                strcat(s, ".txt");
+                WriteInFile(s, p -> next);
+                        
+                break;
+            }
+                    
+            case 9:
+            {
+                OnOff = 0;
+                break;
+            }
+                    
+            default:
+            {
+                printf("Incorrect input. Try again\n");
+                break;
+            }
+                
+        }
+    }
+	return 0;
+}
+
 int main()
 {
     Person head = {.name = {0}, .surname = {0}, .birthyear = 0, .next = NULL};
     Position p = &head;
+    
+    Menu(p); 
     
     return 0;
 }
