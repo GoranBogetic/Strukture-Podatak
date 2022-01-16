@@ -18,12 +18,51 @@ int Pop(double* resultDestination, Point head);
 int PerformOp(char op, Point head);
 int CalculatePostfixFromFile(double* resultDestination);
 int ReadPostfixFromFile(char** buffer);
+int Menu();
 
 
 int main()
 {
+    Menu();
     
     return 0;
+}
+
+int Menu()
+{
+    int option = 0;
+    double result = 0;
+    
+    while(1)
+    {
+        printf("\nEnter number coresponding to action you want to perform:\n"
+                "1 -> Calculate postfix from a file\n"
+                "2 -> Exit\n");
+        scanf("%d", &option);
+        
+        switch(option)
+        {
+            case 1:
+            {
+                CalculatePostfixFromFile(&result);
+                printf("Result is %.2lf\n", result);
+                
+                break;
+            }
+            
+            case 2:
+            {
+                return 0;
+            }
+            
+            default:
+            {
+                printf("\nIncorrect input. Try again.\n");
+                break;
+            }
+        }
+    }
+    return -1;
 }
 
 Point CreateEl(double num)
