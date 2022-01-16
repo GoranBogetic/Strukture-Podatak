@@ -19,6 +19,7 @@ typedef struct _Stog{
     pt next;
 }Stog;
 
+int Menu(Point pRoot);
 Point CreateEl(int n);
 Point Insert(Point p, Point newEl);
 int Replace(Point p);
@@ -30,15 +31,111 @@ int PrintInFile(char* fName, pt frs);
 pt CreateElStog(int n);
 int DeleteStog(pt head);
 int InsertAfter(pt p, pt newEl);
-Point FindLast(pt head);
+pt FindLast(pt head);
 int AddAtEnd(int n, pt head);
 
 int main()
 {
     Point pRoot = NULL;
     pRoot = CreateTree(pRoot);
+    Menu(pRoot);
     
     return 0;
+}
+
+int Menu(Point pRoot)
+{
+    int option = 0;
+    
+    while(1)
+    {
+        printf("\nEnter number coresponding to action you want to perform:\n"
+                "1 -> Add a new element to the tree\n"
+                "2 -> Print inorder\n"
+                "3 -> Replace all elements with the sum of their branches\n"
+                "4 -> Print inorder in file\n"
+                "5 -> Generate new tree\n"
+                "6 -> Exit\n");
+                
+        scanf(" %d", &option);
+        
+        switch(option)
+        {
+            case 1:
+            {
+                int n;
+                printf("\nEnter the value you would like to add to the tree:\n");
+                scanf(" %d", &n);
+                pRoot = Insert(pRoot, CreateEl(n));
+                option = 0;
+                
+                break;
+            }
+            
+            case 2:
+            {
+                printf("\n");
+                PrintInorder(pRoot);
+                printf("\n");
+                option = 0;
+                
+                break;
+            }
+            
+            case 3:
+            {
+                printf("\n");
+                Replace(pRoot);
+                printf("\n");
+                option = 0;
+                 
+                break;
+            }
+            
+            case 4:
+            {
+                Stog head = {.n = 0, .next = NULL};
+                pt h = &head;
+                char s[20] = "0";
+                
+                printf("Enter the name of the .txt file you wish to write in:\n");
+                scanf(" %s", s);
+                strcat(s, ".txt");
+                InorderToStog(pRoot, h);
+                PrintInFile(s, h->next);
+                printf("\n");
+                
+                option = 0;
+                break;
+            }
+            
+            case 5:
+            {
+                printf("\n");
+                DeleteAll(pRoot);
+                pRoot = NULL;
+                pRoot = CreateTree(pRoot);
+                printf("\n");
+                
+                option = 0;
+                break;
+            }
+            
+            case 6:
+            {
+                DeleteAll(pRoot);
+                return 0;
+            }
+            
+            default:
+            {
+                printf("\nIncorrect input. Try again.\n");
+                
+                option = 0;
+                break;
+            }
+        }
+    }
 }
 
 Point CreateTree(Point pRoot)
@@ -100,7 +197,7 @@ int PrintInorder(Point p)
 
 int Replace(Point p)
 {
-    int temp = NULL;
+    int temp = 0;
     
     if(p == NULL)
         return 0;
@@ -151,7 +248,7 @@ int InsertAfter(pt p, pt newEl)
     return 0;
 }
 
-Point FindLast(pt head)
+pt FindLast(pt head)
 {
     pt last = head;
     while(last -> next){
@@ -213,9 +310,3 @@ int DeleteStog(pt head)
     
     return 0;
 }
-
-
-
-
-
-
